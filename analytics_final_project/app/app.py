@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pickle
 import warnings
+import os
 warnings.filterwarnings('ignore')
 
 # Set page configuration
@@ -56,17 +57,25 @@ st.markdown("""
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('data/youth_unemployment_global.csv')
+        # Get the project root directory (parent of the app directory)
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(app_dir)
+        data_path = os.path.join(project_root, 'data', 'youth_unemployment_global.csv')
+        df = pd.read_csv(data_path)
         return df
-    except:
-        st.error("Could not load data file. Please ensure the data file exists.")
+    except Exception as e:
+        st.error(f"Could not load data file: {str(e)}")
         return None
 
 # Load processed data if available
 @st.cache_data
 def load_processed_data():
     try:
-        df_processed = pd.read_csv('data/youth_unemployment_processed.csv')
+        # Get the project root directory (parent of the app directory)
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(app_dir)
+        processed_path = os.path.join(project_root, 'data', 'youth_unemployment_processed.csv')
+        df_processed = pd.read_csv(processed_path)
         return df_processed
     except:
         return None
